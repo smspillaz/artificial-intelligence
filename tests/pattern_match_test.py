@@ -7,6 +7,7 @@
 
 from artificialintelligence.naive_pattern_match import match_pattern_naive
 from artificialintelligence.robin_karp_pattern_match import match_pattern_robin_karp
+from artificialintelligence.kmp_pattern_match import match_pattern_kmp
 
 from nose_parameterized import parameterized
 
@@ -14,7 +15,8 @@ from testtools import TestCase
 
 pattern_matching_functions = {
     "NaiveMatch": match_pattern_naive,
-    "RobinKarp": match_pattern_robin_karp
+    "RobinKarp": match_pattern_robin_karp,
+    "KMPMatch":  match_pattern_kmp
 }
 
 tests = {}
@@ -36,7 +38,8 @@ def _create_pattern_match_test(name, match_function):
 
         @parameterized.expand([
             ("abc", "abbabcabba", [3]),
-            ("daef", "dedfadaefdeafdaef", [5, 13])
+            ("daef", "dedfadaefdeafdaef", [5, 13]),
+            ("abcab", "abcabcabcab", [0, 3, 6])
         ])
         def test_find_alpha_patterns(self, pattern, haystack, expected_matches):
             """Test finding some simple alphabetical patterns."""

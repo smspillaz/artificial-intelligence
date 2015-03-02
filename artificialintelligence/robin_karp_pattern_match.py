@@ -1,6 +1,6 @@
-# /tests/naive_pattern_match.py
+# /tests/robin_karp_pattern_match.py
 #
-# Naive pattern matching
+# Pattern match using the Robin-Karp method to optimize the inner loop
 #
 # See LICENCE.md for Copyright information
 """Loader module."""
