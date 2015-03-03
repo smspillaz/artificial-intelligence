@@ -24,35 +24,29 @@ def match_pattern_kmp(pattern, text):
     text_length = len(text)
     pattern_length = len(pattern)
 
+    prefix_table = { 0 :0 }
+    current_jump_index = 0
 
-    # This could probably be a recursive-descent type function, but it
-    # isn't for now.
-    def calculate_prefix(pattern, length):
+    def calculate_prefix(pattern, length, current_jump_index):
         """Calculates the prefix value.
 
         Calculates the longest number of characters in the available prefixes
         which are also available in the pattern suffix for length number of
         characters in."""
 
-        sub_pattern = pattern[0:length]
-        prefixes = []
+        while current_jump_index > 0 and pattern[length] != pattern[current_jump_index]:
+            current_jump_index = prefix_table[current_jump_index]
 
-        for i in range(1, length):
-            prefixes.append(pattern[0:i])
+        if pattern[length] == pattern[current_jump_index]:
+            current_jump_index += 1
 
-        highest_prefix_value = 0
-
-        for prefix in prefixes:
-            prefix_len = len(prefix)
-            candidate_suffix = sub_pattern[length - prefix_len:]
-            if candidate_suffix == prefix:
-                highest_prefix_value = max(highest_prefix_value, prefix_len)
-
-        return highest_prefix_value
+        return (current_jump_index, current_jump_index)
 
     prefix_table = { 0: 0 }
-    for i in range(1, pattern_length + 1):
-        prefix_table[i] = calculate_prefix(pattern, i)
+    for i in range(1, pattern_length):
+        current_jump_index, prefix_table[i] = calculate_prefix(pattern,
+                                                               i,
+                                                               current_jump_index)
 
     pattern_index = 0
     string_index = 0
@@ -69,7 +63,7 @@ def match_pattern_kmp(pattern, text):
 
                 # Due to the prefix/suffix overlap, assume we've matched
                 # n characters as precomputed in the prefix_table.
-                pattern_index = prefix_table[pattern_index]
+                pattern_index = prefix_table[pattern_index - 1]
 
                 # Movement of the string index is by the entire length
                 # of the pattern (since we matched the whole thing), though
