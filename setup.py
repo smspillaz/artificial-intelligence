@@ -30,7 +30,7 @@ setup(name="artificial-intelligence",
       packages=find_packages(exclude=["tests"]),
       extras_require={
           "test": ["coverage",
-                   "coveralls"
+                   "coveralls",
                    "nose",
                    "nose-parameterized",
                    "testtools"]
