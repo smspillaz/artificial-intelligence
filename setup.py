@@ -32,7 +32,8 @@ setup(name="artificial-intelligence",
           "test": ["coverage",
                    "nose",
                    "nose-parameterized",
-                   "testtools"]
+                   "testtools",
+                   "scipy"]
       },
       test_suite="nose.collector",
       zip_safe=True,
