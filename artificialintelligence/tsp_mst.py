@@ -6,8 +6,7 @@
 # See LICENCE.md for Copyright information
 """Loader module."""
 
-from scipy.sparse import csr_matrix
-from scipy.sparse.csgraph import minimum_spanning_tree
+from artificialintelligence.mst import minimum_spanning_tree
 
 from collections import namedtuple
 
@@ -96,10 +95,8 @@ def _find_tsp_path_from_distances(undirected_graph, start_index):
     for i in range(0, len(undirected_graph)):
         assert len(undirected_graph[i]) == len(undirected_graph[0])
 
-    input_csr = csr_matrix(undirected_graph)
-    output_mst_array = minimum_spanning_tree(input_csr).toarray().astype(int)
-
-    path = depth_first_search(start_index, output_mst_array)
+    mst_array = minimum_spanning_tree(undirected_graph)
+    path = depth_first_search(start_index, mst_array)
 
     return path
 
@@ -156,11 +153,6 @@ def find_tsp_path(cities, start_index):
     for row in distance_undirected_graph:
         assert len(row) == len(distance_undirected_graph)
         assert len(row) == len(distance_undirected_graph[0])
-
-    for row in distance_undirected_graph:
-        print(row)
-
-    print("Start index is {0}".format(start_index))
 
     mst_path = _find_tsp_path_from_distances(distance_undirected_graph,
                                              start_index)
