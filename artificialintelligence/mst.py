@@ -54,8 +54,8 @@ Edge = namedtuple("Edge", "vertex_one vertex_two weight")
 def minimum_spanning_tree(undirected_graph):
     """Create a minimum spanning tree from undirected_graph.
 
-    The undirected_graph takes the form of a compressed sparse matrix, where each
-    row representes a node and each column represents the weight of a
+    The undirected_graph takes the form of a compressed sparse matrix, where
+    each row representes a node and each column represents the weight of a
     connection to another node.
 
     So for instance, a graph that looks like this:
