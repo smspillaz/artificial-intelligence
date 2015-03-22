@@ -77,6 +77,10 @@ def match_pattern_generic_rabin_karp(pattern, text):
     match the integers against each other. We use horners rule to
     progress along the text character-by-character.
 
+    Best case this is O(n + m).
+    Worst case this is O(nm). [constant hash collissions and have to keep doing
+                               the inner loop till we get to the end]
+
     Matches are returned as a sequence of indices."""
 
     matches = []
@@ -92,6 +96,8 @@ def match_pattern_generic_rabin_karp(pattern, text):
     pattern_as_integer = 0
     text_chunk_as_integer = 0
 
+    # XXX: Ask what this is for. I suspect its used to determine the maximum
+    #      possible "head" for the hash.
     initial_value_hash = 1
     for i in range(0, pattern_len - 1):
         initial_value_hash = (initial_value_hash * alphabet_len) % PRIME_NUMBER
@@ -116,7 +122,7 @@ def match_pattern_generic_rabin_karp(pattern, text):
 
         # Now move the text chunk along, by doing the following:
         #
-        # alphabet_len * (text_chunk_as_integer -                [ step 1 ] 
+        # alphabet_len * (text_chunk_as_integer -                [ step 1 ]
         #                 (initial_value_hash * char_value(text[i]))) +
         # char_value(text[i + pattern_len]) % PRIME_NUMBER       [ step 2 ]
         #
@@ -125,7 +131,7 @@ def match_pattern_generic_rabin_karp(pattern, text):
         #
         # The second step adds the current tail (eg, text[i + pattern_len])
         # modulo the prime number to the current hash.
-        # 
+        #
         if i < text_len - pattern_len:
             text_chunk_as_integer = (alphabet_len * (text_chunk_as_integer -
                                                      initial_value_hash *
