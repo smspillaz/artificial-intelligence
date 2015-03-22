@@ -52,3 +52,19 @@ def match_pattern_robin_karp(pattern, text):
                 ord(text[i + pattern_length]) - ascii_a_char_value)
 
     return matches
+
+# Generic rabin karp.
+#
+# You need to parse each character in your pattern and then convert it into
+# an int. You multiple you hash by your alphabet size and then modulo prime.
+#
+# You always have to make sure that when there's a match on the hash that the
+# text of the pattern itself also matches to avoid a false positive.
+#
+# Compute the hash of the pattern and the first m characters of the text and
+# then just move along.
+#
+# cur = ((cur - (prev * high) % PRIME + PRIME) * ALPHABET + next) % PRIME
+#
+# The proof for this is that beacuse you've hashed your pattern and every time
+# read the plaintext, you get to skip the inner-loop.
