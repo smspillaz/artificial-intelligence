@@ -9,6 +9,7 @@ from artificialintelligence.naive_pattern_match import match_pattern_naive
 from artificialintelligence.robin_karp_pattern_match import (match_pattern_robin_karp,
                                                              match_pattern_generic_rabin_karp)
 from artificialintelligence.kmp_pattern_match import match_pattern_kmp
+from artificialintelligence.boyer_moore_pattern_match import match_pattern_boyer_moore
 
 from nose_parameterized import parameterized
 
@@ -18,7 +19,8 @@ pattern_matching_functions = {
     "NaiveMatch": match_pattern_naive,
     "RobinKarp": match_pattern_robin_karp,
     "GenericRabinKarp": match_pattern_generic_rabin_karp,
-    "KMPMatch":  match_pattern_kmp
+    "KMPMatch":  match_pattern_kmp,
+    "BoyerMooreMatch": match_pattern_boyer_moore
 }
 
 tests = {}

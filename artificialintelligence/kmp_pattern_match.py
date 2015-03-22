@@ -17,7 +17,6 @@ def match_pattern_kmp(pattern, text):
     subsequence of the suffix of pattern which is also a prefix of pattern.
 
     The complexity of this algorithm is len(pattern) + len(text).
-
     The worse case and best case is O(n)
 
     Then we use the prefix value as calculated during matches to jump ahead
