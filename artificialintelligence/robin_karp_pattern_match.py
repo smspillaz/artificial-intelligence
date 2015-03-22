@@ -68,3 +68,71 @@ def match_pattern_robin_karp(pattern, text):
 #
 # The proof for this is that beacuse you've hashed your pattern and every time
 # read the plaintext, you get to skip the inner-loop.
+PRIME_NUMBER = 49157
+
+def match_pattern_generic_rabin_karp(pattern, text):
+    """Matches patterns based on the Robin-Karp algorithm.
+
+    First convert all of the text in the pattern to integers and then
+    match the integers against each other. We use horners rule to
+    progress along the text character-by-character.
+
+    Matches are returned as a sequence of indices."""
+
+    matches = []
+
+    def char_value(char):
+        """Get the numeric value for this character."""
+        return ord(char)
+
+    alphabet_len = 256
+    pattern_len = len(pattern)
+    text_len = len(text)
+
+    pattern_as_integer = 0
+    text_chunk_as_integer = 0
+
+    initial_value_hash = 1
+    for i in range(0, pattern_len - 1):
+        initial_value_hash = (initial_value_hash * alphabet_len) % PRIME_NUMBER
+
+    # Construct initial hashes
+    for i in range(0, pattern_len):
+        pattern_as_integer = (alphabet_len * pattern_as_integer +
+                              char_value(pattern[i])) % PRIME_NUMBER
+        text_chunk_as_integer = (alphabet_len * text_chunk_as_integer +
+                                 char_value(text[i])) % PRIME_NUMBER
+
+    # Now progress along the text pattern, starting iterations at
+    # 0 and comparing text_chunk_as_integer against
+    # pattern_as_integer.
+    for i in range(0, text_len - pattern_len + 1):
+
+        # If there is a match, there may be a false positive, so
+        # check the characters themselves for a match, then add a match
+        if text_chunk_as_integer == pattern_as_integer:
+            if text[i:i + pattern_len] == pattern:
+                matches.append(i)
+
+        # Now move the text chunk along, by doing the following:
+        #
+        # alphabet_len * (text_chunk_as_integer -                [ step 1 ] 
+        #                 (initial_value_hash * char_value(text[i]))) +
+        # char_value(text[i + pattern_len]) % PRIME_NUMBER       [ step 2 ]
+        #
+        # The first step takes our current hash value and subtracts its "head",
+        # but moves it along by the length of the alphabet.
+        #
+        # The second step adds the current tail (eg, text[i + pattern_len])
+        # modulo the prime number to the current hash.
+        # 
+        if i < text_len - pattern_len:
+            text_chunk_as_integer = (alphabet_len * (text_chunk_as_integer -
+                                                     initial_value_hash *
+                                                     char_value(text[i])) +
+                                     char_value(text[i + pattern_len])) % PRIME_NUMBER
+
+            if text_chunk_as_integer < 0:
+                text_chunk_as_integer += PRIME_NUMBER
+
+    return matches

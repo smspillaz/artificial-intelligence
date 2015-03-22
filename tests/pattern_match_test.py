@@ -6,7 +6,8 @@
 """Test cases for usage of polysquarecmakelinter.main()."""
 
 from artificialintelligence.naive_pattern_match import match_pattern_naive
-from artificialintelligence.robin_karp_pattern_match import match_pattern_robin_karp
+from artificialintelligence.robin_karp_pattern_match import (match_pattern_robin_karp,
+                                                             match_pattern_generic_rabin_karp)
 from artificialintelligence.kmp_pattern_match import match_pattern_kmp
 
 from nose_parameterized import parameterized
@@ -16,6 +17,7 @@ from testtools import TestCase
 pattern_matching_functions = {
     "NaiveMatch": match_pattern_naive,
     "RobinKarp": match_pattern_robin_karp,
+    "GenericRabinKarp": match_pattern_generic_rabin_karp,
     "KMPMatch":  match_pattern_kmp
 }
 
