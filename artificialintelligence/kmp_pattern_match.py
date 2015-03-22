@@ -1,6 +1,6 @@
 # /tests/kmp_pattern_match.py
 #
-# Pattern match using the Knuth method to optimize the outer loop
+# Pattern match using the Knuth-Morris-Pratt method to optimize the outer loop
 #
 # See LICENCE.md for Copyright information
 """Knuth pattern matching method."""
@@ -16,6 +16,10 @@ def match_pattern_kmp(pattern, text):
     steps into the pattern. The value of the prefix function is the longest
     subsequence of the suffix of pattern which is also a prefix of pattern.
 
+    The complexity of this algorithm is len(pattern) + len(text).
+
+    The worse case and best case is O(n)
+
     Then we use the prefix value as calculated during matches to jump ahead
     during pattern matching."""
 
@@ -25,16 +29,30 @@ def match_pattern_kmp(pattern, text):
     pattern_length = len(pattern)
 
     prefix_table = { 0 :0 }
+
+    # The current_jump_index keeps track of the length of the suffix
+    # which matches an earlier state. 
     current_jump_index = 0
 
     def calculate_prefix(pattern, length, current_jump_index):
         """Calculates the prefix value.
 
+        Note that if you had a uniform pattern with entirely repeated characters
+        then you're jump-back amount is going to be 0, 1, 2, 3, 4 characters in
+        which means that its going to be entirely useless.
+
         Calculates the longest number of characters in the available prefixes
         which are also available in the pattern suffix for length number of
         characters in."""
 
-        while current_jump_index > 0 and pattern[length] != pattern[current_jump_index]:
+        # If the suffix that we're currently considering (eg,
+        # pattern[length]) does not match the current suffix-index
+        # then we need to jump backwards in the prefix table to get the
+        # jump index from there. This will eventually cause
+        # current_jump_index to end in zero where there's no found
+        # common suffix for this case.
+        while (current_jump_index > 0 and
+               pattern[length] != pattern[current_jump_index]):
             current_jump_index = prefix_table[current_jump_index]
 
         if pattern[length] == pattern[current_jump_index]:
@@ -43,6 +61,13 @@ def match_pattern_kmp(pattern, text):
         return (current_jump_index, current_jump_index)
 
     prefix_table = { 0: 0 }
+
+    # Log the index into the pattern which has the same prefix-for-suffix
+    # for the subpattern's length
+    #
+    # For example: abbabaa
+    #
+    # 
     for i in range(1, pattern_length):
         current_jump_index, prefix_table[i] = calculate_prefix(pattern,
                                                                i,
