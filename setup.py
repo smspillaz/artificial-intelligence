@@ -28,6 +28,9 @@ setup(name="artificial-intelligence",
       license="MIT",
       keywords="development linters",
       packages=find_packages(exclude=["tests"]),
+      require=[
+          "sympy"
+      ],
       extras_require={
           "test": ["coverage",
                    "coveralls",

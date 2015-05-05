@@ -90,7 +90,8 @@ def _find_tsp_path_from_distances(undirected_graph, start_index):
     MSTNode 3 is connected to node 3 by zero (cannot connect to itself).
 
     The output graph is in the same form, (but it only shows the minimum
-    spanning tree and not all the connections)."""
+    spanning tree and not all the connections).
+    """
 
     for i in range(0, len(undirected_graph)):
         assert len(undirected_graph[i]) == len(undirected_graph[0])
